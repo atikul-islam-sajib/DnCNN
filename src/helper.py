@@ -36,7 +36,12 @@ def helper(*kwargs):
     else:
         raise FileNotFoundError("Could not find processed data")
 
-    model = model.to(device)
+    try:
+        model = model.to(device)
+    except Exception as e:
+        print("The exception caught in the section is", e)
+    else:
+        model.apply(weight_init)
 
     return {
         "model": model,

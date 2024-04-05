@@ -7,6 +7,7 @@ import torch.optim as optim
 
 sys.path.append("src/")
 
+from utils import device_init
 from helper import helper
 from DnCNN import DnCNN
 
@@ -54,8 +55,11 @@ class Trainer:
             self.model = params["model"]
             self.optimizer = params["optimizer"]
             self.criterion = params["criterion"]
+            self.train_dataloader = params["train_dataloader"]
+            self.test_dataloader = params["test_dataloader"]
 
         finally:
+            self.device = device_init(device=self.device)
             self.history = {"train_loss": [], "test_loss": []}
 
     def l1(self, **kwargs):
@@ -69,4 +73,5 @@ class Trainer:
         )
 
     def train(self):
-        pass
+        for index, (noise_images, clean_images) in enumerate(self.train_dataloader):
+            pass
