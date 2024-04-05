@@ -1,5 +1,6 @@
 import sys
 import os
+import yaml
 import joblib
 import torch
 import torch.nn as nn
@@ -133,3 +134,33 @@ def weight_init(m):
     elif classname.find("BatchNorm") != -1:
         torch.nn.init.normal_(m.weight.data, mean=1.0, std=0.02)
         torch.nn.init.constant_(m.bias.data, val=0.0)
+
+
+def params():
+    """
+    Loads and returns parameters from a YAML file.
+
+    This function reads a file named 'params.yml' located in the current directory, parses it as YAML, and returns the contents as a Python dictionary. It's a convenient way to load configuration settings or parameters for an application.
+
+    Returns:
+        dict: A dictionary containing parameters loaded from 'params.yml'.
+
+    Raises:
+        FileNotFoundError: If 'params.yml' does not exist in the current directory.
+        yaml.YAMLError: If there is an error parsing the YAML content.
+
+    Example:
+        Assuming 'params.yml' contains:
+        ```
+        learning_rate: 0.01
+        batch_size: 32
+        ```
+        >>> parameters = params()
+        >>> print(parameters)
+        {'learning_rate': 0.01, 'batch_size': 32}
+
+    Note:
+        Ensure that the 'yaml' module is installed and imported in your script (`import yaml`). Also, the structure of the YAML file should match the expected structure of the parameters dictionary your application needs.
+    """
+    with open("./params.yml", "r") as file:
+        return yaml.safe_load(file)
