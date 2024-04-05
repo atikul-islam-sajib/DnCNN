@@ -10,6 +10,9 @@ from utils import dump, load
 
 
 class UnitTest(unittest.TestCase):
+    """
+    A class for unit testing the DataLoader objects used in a deep learning project.
+    """
 
     def setUp(self):
         if os.path.exists(PROCESSED_DATA_PATH):
@@ -29,14 +32,23 @@ class UnitTest(unittest.TestCase):
         self.total_data = 100
 
     def tearDown(self):
+        """
+        Teardown method to clean up after each test.
+        """
         self.total_data = None
 
     def test_total_datasets(self):
+        """
+        Test to ensure the total dataset size matches the expected size.
+        """
         self.assertEquals(
             sum(noise.size(0) for noise, clean in self.dataloader), self.total_data
         )
 
     def test_size_dataset(self):
+        """
+        Test to verify that the size of the batches in the dataset is as expected.
+        """
         noise, _ = next(iter(self.dataloader))
 
         self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
