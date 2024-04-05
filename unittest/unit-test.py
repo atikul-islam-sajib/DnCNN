@@ -57,10 +57,14 @@ class UnitTest(unittest.TestCase):
 
         self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
 
-    def test_DnCNN_model(self):
+    def test_DnCNN_model_params(self):
         self.assertEqual(
             sum(params.numel() for params in self.model.parameters()), self.total_params
         )
+
+    def test_DnCNN_model(self):
+        data = torch.randn(1, 3, 64, 64)
+        self.assertEqual(self.model(data).size(), torch.Size([1, 3, 64, 64]))
 
 
 if __name__ == "__main__":
