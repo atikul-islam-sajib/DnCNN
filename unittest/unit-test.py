@@ -37,7 +37,7 @@ class UnitTest(unittest.TestCase):
         )
 
     def test_size_dataset(self):
-        noise, clean = next(iter(self.dataloader))
+        noise, _ = next(iter(self.dataloader))
 
         self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
 
