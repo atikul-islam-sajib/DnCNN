@@ -7,6 +7,7 @@ sys.path.append("src/")
 
 from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
 from utils import dump, load
+from DnCNN import DnCNN
 
 
 class UnitTest(unittest.TestCase):
@@ -26,10 +27,13 @@ class UnitTest(unittest.TestCase):
                 filename=os.path.join(PROCESSED_DATA_PATH, "test_dataloader.pkl")
             )
 
+            self.model = DnCNN()
+
         else:
             raise Exception("Data not found".capitalize())
 
         self.total_data = 100
+        self.total_params = 558336
 
     def tearDown(self):
         """
@@ -52,6 +56,11 @@ class UnitTest(unittest.TestCase):
         noise, _ = next(iter(self.dataloader))
 
         self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
+
+    def test_DnCNN_model(self):
+        self.assertEqual(
+            sum(params.numel() for params in self.model.parameters()), self.total_params
+        )
 
 
 if __name__ == "__main__":
