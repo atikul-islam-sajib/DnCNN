@@ -58,11 +58,17 @@ class UnitTest(unittest.TestCase):
         self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
 
     def test_DnCNN_model_params(self):
+        """
+        Test to verify that the params of the in the model is as expected.
+        """
         self.assertEqual(
             sum(params.numel() for params in self.model.parameters()), self.total_params
         )
 
     def test_DnCNN_model(self):
+        """
+        Test to verify that the size of the output in the model is as expected.
+        """
         data = torch.randn(1, 3, 64, 64)
         self.assertEqual(self.model(data).size(), torch.Size([1, 3, 64, 64]))
 
