@@ -36,6 +36,11 @@ class UnitTest(unittest.TestCase):
             sum(noise.size(0) for noise, clean in self.dataloader), self.total_data
         )
 
+    def test_size_dataset(self):
+        noise, clean = next(iter(self.dataloader))
+
+        self.assertEquals(noise.size(), torch.Size([24, 3, 64, 64]))
+
 
 if __name__ == "__main__":
     unittest.main()
