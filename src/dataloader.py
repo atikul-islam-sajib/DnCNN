@@ -16,7 +16,45 @@ from utils import clean, dump, load
 
 
 class Loader(Dataset):
+    """
+    Loader class to handle the loading, preprocessing, and splitting of image datasets for training and testing.
+
+    Attributes:
+        image_path (str): Path to the zip file containing the dataset.
+        batch_size (int): Number of images per batch.
+        image_size (int): The height and width to which the images will be resized.
+        split_ratio (float): The ratio of the dataset to be used for testing.
+
+    Methods:
+        unzip_folder: Extracts the dataset from a zip file to a specified path.
+        image_transforms: Returns a composition of image transformations.
+        image_split: Splits the dataset into training and testing sets.
+        create_dataloader: Creates and saves data loaders for the dataset.
+        dataset_details: Prints details about the dataset.
+        show_images: Displays a set of noisy and clean images for visualization.
+
+    Note:
+        Ensure that the paths for RAW_DATA_PATH and PROCESSED_DATA_PATH are correctly set in the 'config' module.
+
+    Example:
+        >>> loader = Loader(image_path="./data/data.zip", batch_size=16, image_size=64, split_ratio=0.25)
+        >>> loader.unzip_folder()
+        >>> dataloader = loader.create_dataloader()
+        >>> loader.dataset_details()
+        >>> loader.show_images()
+    """
+
     def __init__(self, image_path=None, batch_size=16, image_size=64, split_ratio=0.25):
+        """
+        Initializes the Loader with dataset path, batch size, image size, and split ratio.
+
+        Parameters:
+            image_path (str): Path to the dataset zip file.
+            batch_size (int): Number of images in each batch of data.
+            image_size (int): Size (height and width) to which images are resized.
+            split_ratio (float): Fraction of the dataset to allocate to the test set.
+
+        """
         self.image_path = image_path
         self.batch_size = batch_size
         self.image_size = image_size
@@ -26,6 +64,12 @@ class Loader(Dataset):
         self.noise_images = list()
 
     def unzip_folder(self):
+        """
+        Extracts images from a zipped file to RAW_DATA_PATH.
+
+        Raises:
+            Exception: If RAW_DATA_PATH does not exist or the zip file is invalid.
+        """
 
         try:
             clean()
@@ -44,6 +88,13 @@ class Loader(Dataset):
             raise Exception("Please provide a valid path".capitalize())
 
     def image_transforms(self):
+        """
+        Defines and returns the transformations to be applied to the images.
+
+        Returns:
+            torchvision.transforms.Compose: A composed transform with resizing, tensor conversion, and normalization.
+
+        """
         return transforms.Compose(
             [
                 transforms.Resize((self.image_size, self.image_size)),
@@ -53,6 +104,19 @@ class Loader(Dataset):
         )
 
     def image_split(self, **kwargs):
+        """
+        Splits the dataset into training and testing sets based on `split_ratio`.
+
+        Parameters:
+            **kwargs: Expects 'noise_images' and 'clean_images' lists.
+
+        Returns:
+            tuple: Contains split datasets (train_noise, test_noise, train_clean, test_clean).
+
+        Raises:
+            ValueError: If `kwargs` does not contain 'noise_images' or 'clean_images'.
+
+        """
         return train_test_split(
             kwargs["noise_images"],
             kwargs["clean_images"],
@@ -61,7 +125,15 @@ class Loader(Dataset):
         )
 
     def create_dataloader(self):
+        """
+        Creates and saves DataLoader objects for training and testing datasets.
 
+        Returns:
+            DataLoader: The combined DataLoader for the entire dataset.
+
+        Raises:
+            Exception: If necessary paths do not exist or dataset is not properly formatted.
+        """
         if os.path.exists(RAW_DATA_PATH):
             dataset = os.listdir(RAW_DATA_PATH)[0]
 
@@ -141,6 +213,12 @@ class Loader(Dataset):
 
     @staticmethod
     def dataset_details():
+        """
+        Prints the total number of images and the shape of clean and noisy images in the dataset.
+
+        Raises:
+            Exception: If PROCESSED_DATA_PATH does not exist.
+        """
         if os.path.exists(PROCESSED_DATA_PATH):
             dataloader = load(
                 filename=os.path.join(PROCESSED_DATA_PATH, "dataloader.pkl")
@@ -159,6 +237,12 @@ class Loader(Dataset):
 
     @staticmethod
     def show_images():
+        """
+        Visualizes a sample of noisy and clean images from the dataset.
+
+        Raises:
+            Exception: If PROCESSED_DATA_PATH does not exist or image files are missing.
+        """
         if os.path.exists(PROCESSED_DATA_PATH):
             dataloader = load(
                 filename=os.path.join(PROCESSED_DATA_PATH, "dataloader.pkl")
