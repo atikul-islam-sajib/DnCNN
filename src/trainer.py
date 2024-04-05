@@ -3,6 +3,7 @@ import os
 import argparse
 import numpy as np
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,8 +11,14 @@ from torchvision.utils import save_image
 
 sys.path.append("src/")
 
-from config import TRAIN_MODELS_PATH, BEST_MODELS_PATH, TRAIN_IMAGES_PATH
-from utils import device_init, params
+from config import (
+    TRAIN_MODELS_PATH,
+    BEST_MODELS_PATH,
+    TRAIN_IMAGES_PATH,
+    METRICS_PATH,
+    FILE_PATH,
+)
+from utils import device_init, params, dump, load
 from helper import helper
 from DnCNN import DnCNN
 
@@ -205,14 +212,107 @@ class Trainer:
                     epoch=epoch + 1, train_loss=train_loss, test_loss=test_loss
                 )
 
-        try:
-            self.history["train_loss"] = np.array(train_loss).mean()
-            self.history["test_loss"] = np.array(test_loss).mean()
+            try:
+                self.history["train_loss"] = np.array(train_loss).mean()
+                self.history["test_loss"] = np.array(test_loss).mean()
 
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                print(e)
+
+        if os.path.exists(METRICS_PATH):
+            dump(value=self.history, filename=os.path.join(METRICS_PATH, "metrics.pkl"))
+        else:
+            raise Exception("Metrics path is not found".capitalize())
+
+    @staticmethod
+    def display_metrics():
+        if os.path.exists(METRICS_PATH):
+            history = load(filename=os.path.join(METRICS_PATH, "metrics.pkl"))
+
+            plt.plot(history["train_loss"], label="train_loss")
+            plt.plot(history["test_loss"], label="test_loss")
+            plt.legend()
+
+            try:
+                plt.savefig(os.path.join(METRICS_PATH, "metrics.png"))
+            except Exception as e:
+                print(e)
+
+            else:
+                plt.show()
+        else:
+            raise Exception("Metrics path is not found".capitalize())
 
 
 if __name__ == "__main__":
-    trainer = Trainer(epochs=100, lr=1e-4, device="mps", display=True, adam=True)
-    trainer.train()
+    parser = argparse.ArgumentParser(description="Define the training of DnCNN".title())
+
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=100,
+        help="Define the number of epochs".capitalize(),
+    )
+    parser.add_argument(
+        "--lr", type=float, default=1e-4, help="Define the learning rate".capitalize()
+    )
+    parser.add_argument(
+        "--device", type=str, default="mps", help="Define the device".capitalize()
+    )
+    parser.add_argument(
+        "--display", type=bool, default=True, help="Define the display".capitalize()
+    )
+    parser.add_argument(
+        "--beta1", type=float, default=0.9, help="Define the beta1".capitalize()
+    )
+    parser.add_argument(
+        "--train", action="store_true", help="Define the beta2".capitalize()
+    )
+    parser.add_argument(
+        "--adam", type=bool, default=True, help="Define the adam".capitalize()
+    )
+    parser.add_argument(
+        "--SGD", type=bool, default=False, help="Define the SGD".capitalize()
+    )
+    parser.add_argument(
+        "--is_l1", type=bool, default=False, help="Define the l1".capitalize()
+    )
+    parser.add_argument(
+        "--is_l2", type=bool, default=False, help="Define the l2".capitalize()
+    )
+    parser.add_argument(
+        "--is_huber_loss",
+        type=bool,
+        default=False,
+        help="Define the huber loss".capitalize(),
+    )
+    parser.add_argument(
+        "--is_weight_clip",
+        type=bool,
+        default=False,
+        help="Define the weight clip".capitalize(),
+    )
+
+    args = parser.parse_args()
+
+    if args.train:
+        trainer = Trainer(
+            epochs=args.epochs,
+            lr=args.lr,
+            beta1=args.beta1,
+            device=args.device,
+            display=args.display,
+            adam=args.adam,
+            SGD=args.SGD,
+            is_l1=args.is_l1,
+            is_l2=args.is_l2,
+            is_huber_loss=args.is_huber_loss,
+            is_weight_clip=args.is_weight_clip,
+        )
+
+        trainer.train()
+
+        Trainer.display_metrics()
+
+    else:
+        raise Exception("The training cannot be done".capitalize())
