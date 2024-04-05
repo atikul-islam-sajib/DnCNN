@@ -4,3 +4,8 @@ model:
   padding: 1
   num_repetitive: 15
   bias: False
+  min: -0.01
+  max: 0.01
+  lambda: 0.001
+  beta1: 0.5
+  momentum: 0.9

@@ -167,7 +167,7 @@ class Loader(Dataset):
 
                 dataloader = DataLoader(
                     dataset=list(zip(self.noise_images, self.clean_images)),
-                    batch_size=self.batch_size * 6,
+                    batch_size=self.batch_size * 10,
                     shuffle=True,
                 )
 
