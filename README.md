@@ -98,7 +98,6 @@ images/
 │ │ ├── 1.png
 │ │ ├── 2.png
 │ │ ├── ...
-
 ```
 
 #### Naming Convention:
@@ -272,15 +271,15 @@ charts.plot()
 from IPython.display import Image
 
 # Display the result image
-Image("/content/DnCNN/outputs/test_images/result.png")
+Image("/content/DnCNN/outputs/test_images/test.png")
 
 # Display the loss curve image
-Image("/content/U-Net/metrics/metrics.png")
+Image("/content/DnCNN/metrics/metrics.png")
 ```
 
 ## Contributing
 
-Contributions to improve this implementation of U-Net are welcome. Please follow the standard fork-branch-pull request workflow.
+Contributions to improve this implementation of DnCNN are welcome. Please follow the standard fork-branch-pull request workflow.
 
 ## License
 
