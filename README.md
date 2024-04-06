@@ -1,37 +1,8 @@
 # DnCNN - Residual Learning of Deep CNN for Image Denoising
 
-<html>
-<head>
-<style>
-/* Container holding the image */
-.img-container {
-  position: relative;
-  width: 50%;
-}
+<img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
 
-/_ The image _/
-.img-container img {
-width: 100%;
-transition: transform 0.5s ease;
-}
-
-/_ The image zoom effect _/
-.img-container:hover img {
-transform: scale(1.5);
-}
-</style>
-
-</head>
-<body>
-
-<div class="img-container">
-  <img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg?raw=true" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
-</div>
-
-</body>
-</html>
-
-U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
+The DnCNN (Denoising Convolutional Neural Network) is a deep learning model designed for image denoising tasks, offering state-of-the-art performance by learning end-to-end mappings from noisy to clean images. It employs a deep architecture consisting of several convolutional layers without any fully connected layers, enabling it to efficiently handle various noise levels through a single model. The network leverages batch normalization and residual learning to speed up training and enhance denoising performance, making it a powerful tool for enhancing image quality in applications ranging from photography to medical imaging.
 
 <img src="https://miro.medium.com/v2/resize:fit:2000/1*Z0Qc0-ixlMKKs8EnPN3Z-Q.png" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
 
