@@ -246,6 +246,8 @@ trainer = Trainer(
     beta1=0.9,
     adam=True,
     SGD=False,
+    is_vgg16-False,
+    is_resnet=False,
     is_lr_scheduler=False,
     is_l1=False,
     is_l2=False,
