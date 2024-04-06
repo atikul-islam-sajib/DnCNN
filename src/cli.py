@@ -5,7 +5,6 @@ import argparse
 sys.path.append("src/")
 
 from dataloader import Loader
-from DnCNN import DnCNN
 from trainer import Trainer
 from test import Charts
 

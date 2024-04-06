@@ -7,7 +7,15 @@ import torch.nn as nn
 
 sys.path.append("src/")
 
-from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
+from config import (
+    RAW_DATA_PATH,
+    PROCESSED_DATA_PATH,
+    TRAIN_IMAGES_PATH,
+    BEST_MODELS_PATH,
+    TRAIN_MODELS_PATH,
+    TEST_IMAGES_PATH,
+    GIF_IMAGE_PATH,
+)
 
 
 def dump(value, filename):
@@ -47,6 +55,23 @@ def load(filename):
         raise Exception("Please provide a valid path".capitalize())
 
 
+def clean_helpers(path):
+    """
+    Removes the contents of directories specified by `RAW_DATA_PATH` and `PROCESSED_DATA_PATH`.
+
+    The function deletes the first directory found in `RAW_DATA_PATH` and all files within `PROCESSED_DATA_PATH`.
+    It is intended to prepare the environment for a new dataset by clearing out old data.
+
+    Raises:
+        Exception: If either `RAW_DATA_PATH` or `PROCESSED_DATA_PATH` does not exist or points to an invalid path.
+    """
+    if os.path.exists(path):
+        for file in os.listdir(path):
+            os.remove(os.path.join(path, file))
+    else:
+        raise Exception("Please provide a valid path".capitalize())
+
+
 def clean():
     """
     Removes the contents of directories specified by `RAW_DATA_PATH` and `PROCESSED_DATA_PATH`.
@@ -69,13 +94,18 @@ def clean():
     else:
         raise Exception("Please provide a valid path".capitalize())
 
-    if os.path.exists(PROCESSED_DATA_PATH):
-
-        for file in os.listdir(PROCESSED_DATA_PATH):
-            os.remove(os.path.join(PROCESSED_DATA_PATH, file))
-
-    else:
-        raise Exception("Please provide a valid path".capitalize())
+    for path in [
+        PROCESSED_DATA_PATH,
+        TRAIN_IMAGES_PATH,
+        TEST_IMAGES_PATH,
+        BEST_MODELS_PATH,
+        TRAIN_MODELS_PATH,
+        GIF_IMAGE_PATH,
+    ]:
+        try:
+            clean_helpers(path)
+        except Exception as e:
+            print(e)
 
 
 def device_init(device="mps"):
