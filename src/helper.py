@@ -11,6 +11,7 @@ from utils import weight_init, load, params
 from config import PROCESSED_DATA_PATH
 from DnCNN import DnCNN
 from vgg16 import VGG16
+from resnet import ResNet
 
 
 def helper(**kwargs):
@@ -60,6 +61,7 @@ def helper(**kwargs):
     device = kwargs["device"]
     adam = kwargs["adam"]
     is_vgg16 = kwargs["is_vgg16"]
+    is_resnet = kwargs["is_resnet"]
     SGD = kwargs["SGD"]
     lr = kwargs["lr"]
     beta1 = kwargs["beta1"]
@@ -68,6 +70,8 @@ def helper(**kwargs):
 
     if is_vgg16:
         model = VGG16()
+    elif is_resnet:
+        model = ResNet()
     else:
         model = DnCNN()
 

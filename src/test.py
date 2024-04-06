@@ -17,6 +17,7 @@ from config import (
 from utils import device_init, load
 from DnCNN import DnCNN
 from vgg16 import VGG16
+from resnet import ResNet
 
 
 class Charts:
@@ -49,7 +50,7 @@ class Charts:
             Plots comparison images (noisy, clean, predicted) and saves a comparison figure and a training images GIF.
     """
 
-    def __init__(self, device="mps", is_vgg16=False):
+    def __init__(self, device="mps", **kwargs):
         """
         Initializes the Charts object with specified device for PyTorch operations and
         sets initial values for attributes.
@@ -58,7 +59,8 @@ class Charts:
             device (str): The device type for PyTorch operations. Defaults to 'mps'.
         """
         self.device = device_init(device=device)
-        self.is_vgg16 = is_vgg16
+        self.is_vgg16 = kwargs["is_vgg16"]
+        self.is_resnet = kwargs["is_resnet"]
         self.infinity = float("inf")
         self.model = None
         self.best_model = None
@@ -152,6 +154,8 @@ class Charts:
         try:
             if self.is_vgg16:
                 self.model = VGG16().to(self.device)
+            elif self.is_resnet:
+                self.model = ResNet().to(self.device)
             else:
                 self.model = DnCNN().to(self.device)
         except Exception as e:
