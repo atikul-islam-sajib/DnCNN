@@ -5,8 +5,6 @@ import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import torch
-import torch.nn as nn
-import torch.optim as optim
 from torchvision.utils import save_image
 
 sys.path.append("src/")
@@ -24,6 +22,26 @@ from DnCNN import DnCNN
 
 
 class Trainer:
+    """
+    Trainer class for the DnCNN model, encapsulating training procedures, loss computation,
+    and checkpoint handling.
+
+    Attributes:
+        epochs (int): Total number of training epochs.
+        lr (float): Learning rate for optimizer.
+        beta1 (float): Beta1 parameter for Adam optimizer.
+        device (str): Computation device ('cuda', 'mps', 'cpu').
+        is_adam (bool): Flag to use Adam optimizer; default is True.
+        is_SGD (bool): Flag to use SGD optimizer; ignored if is_adam is True.
+        is_l1 (bool): Flag to add L1 regularization.
+        is_l2 (bool): Flag to add L2 regularization.
+        is_huber_loss (bool): Flag to use Huber loss instead of default.
+        is_weight_clip (bool): Flag to clip weights; requires specified min and max in params.
+        display (bool): Flag to display training progress and metrics.
+        DnCNN (DnCNN): Instance of DnCNN model.
+        infinity (float): Variable to track the best loss value.
+    """
+
     def __init__(
         self,
         epochs=100,
@@ -32,18 +50,36 @@ class Trainer:
         device="mps",
         adam=True,
         SGD=False,
+        is_lr_scheduler=False,
         is_l1=False,
         is_l2=False,
         is_huber_loss=False,
         is_weight_clip=False,
         display=False,
     ):
+        """
+        Initializes the trainer with model and training parameters.
+
+        Parameters:
+            epochs (int): Number of epochs for training.
+            lr (float): Learning rate for the optimizer.
+            beta1 (float): Beta1 hyperparameter for Adam optimizer.
+            device (str): Device ('cuda', 'mps', 'cpu') for training.
+            adam (bool): Flag to use Adam optimizer.
+            SGD (bool): Flag to use SGD optimizer; ignored if adam is True.
+            is_l1 (bool): Enable L1 regularization.
+            is_l2 (bool): Enable L2 regularization.
+            is_huber_loss (bool): Use Huber loss as the criterion.
+            is_weight_clip (bool): Enable weight clipping.
+            display (bool): Enable progress display.
+        """
         self.epochs = epochs
         self.lr = lr
         self.beta1 = beta1
         self.is_adam = adam
         self.is_SGD = SGD
         self.device = device
+        self.is_lr_scheduler = is_lr_scheduler
         self.is_l1 = is_l1
         self.is_l2 = is_l2
         self.is_huber_loss = is_huber_loss
@@ -81,16 +117,43 @@ class Trainer:
             self.history = {"train_loss": [], "test_loss": []}
 
     def l1(self, **kwargs):
+        """
+        Applies L1 regularization to the model parameters.
+
+        Parameters:
+            kwargs (dict): Contains 'lambda_value' for regularization strength and 'model' for the DnCNN instance.
+
+        Returns:
+            torch.Tensor: The L1 regularization term.
+        """
         return kwargs["lambda_value"] * sum(
             torch.norm(params, 1) for params in kwargs["model"].parameters()
         )
 
     def l2(self, **kwargs):
+        """
+        Applies L2 regularization to the model parameters.
+
+        Parameters:
+            kwargs (dict): Contains 'lambda_value' for regularization strength and 'model' for the DnCNN instance.
+
+        Returns:
+            torch.Tensor: The L2 regularization term.
+        """
         return kwargs["lambda_value"] * sum(
             torch.norm(params, 2) for params in kwargs["model"].parameters()
         )
 
     def update_train_loss(self, **kwargs):
+        """
+        Computes and updates the training loss for a single batch.
+
+        Parameters:
+            kwargs (dict): Contains 'noise_images' and 'clean_images' tensors.
+
+        Returns:
+            float: The training loss value.
+        """
         self.optimizer.zero_grad()
 
         train_loss = self.criterion(
@@ -117,6 +180,15 @@ class Trainer:
         return train_loss.item()
 
     def update_test_loss(self, **kwargs):
+        """
+        Computes the test loss for a single batch.
+
+        Parameters:
+            kwargs (dict): Contains 'noise_images' and 'clean_images' tensors.
+
+        Returns:
+            float: The test loss value.
+        """
         predicted_loss = self.criterion(
             self.model(kwargs["noise_images"]), kwargs["clean_images"]
         )
@@ -124,6 +196,12 @@ class Trainer:
         return predicted_loss.item()
 
     def save_checkpoints(self, **kwargs):
+        """
+        Saves model checkpoints and the best model based on test loss.
+
+        Parameters:
+            kwargs (dict): Contains 'epoch' and 'test_loss' for checkpoint information.
+        """
         if os.path.exists(TRAIN_MODELS_PATH):
             torch.save(
                 self.model.state_dict(),
@@ -147,6 +225,12 @@ class Trainer:
                 )
 
     def display_progress(self, **kwargs):
+        """
+        Displays or prints the training progress at the end of each epoch.
+
+        Parameters:
+            kwargs (dict): Contains 'epoch', 'train_loss', and 'test_loss'.
+        """
         if self.display:
             print(
                 "Epochs - [{}/{}] - train_loss: {:.4f} - test_loss: {:.4f}".format(
@@ -160,6 +244,22 @@ class Trainer:
             print("Epochs - [{}/{}] is completed".format(kwargs["epoch"], self.epochs))
 
     def train(self):
+        """
+        Executes the training loop over the set number of epochs.
+
+        This method iterates through both training and testing dataloaders for each epoch,
+        computes the loss for each batch, and updates the model parameters accordingly. It keeps track of the training
+        and testing losses to monitor the model's performance over time. Additionally, it saves model checkpoints and
+        the best model based on the test loss. It also visualizes the training progress and optionally saves generated
+        images to inspect the model's output quality.
+
+        The method handles exceptions during the checkpoint saving process and ensures that progress is displayed
+        and metrics are recorded regardless of intermediate errors. It concludes by saving the training history
+        to a specified path for further analysis.
+
+        Raises:
+            Exception: If the METRICS_PATH does not exist, indicating an issue with the specified directory for saving metrics.
+        """
         for epoch in tqdm(range(self.epochs)):
             train_loss = list()
             test_loss = list()
@@ -226,6 +326,9 @@ class Trainer:
 
     @staticmethod
     def display_metrics():
+        """
+        Plots the training and testing loss curves from the training history.
+        """
         if os.path.exists(METRICS_PATH):
             history = load(filename=os.path.join(METRICS_PATH, "metrics.pkl"))
 
