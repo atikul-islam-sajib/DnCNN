@@ -132,5 +132,3 @@ class Charts:
 if __name__ == "__main__":
     charts = Charts()
     charts.plot()
-
-    # print(charts.details)
