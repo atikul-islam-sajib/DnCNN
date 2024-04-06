@@ -16,6 +16,7 @@ from config import (
 )
 from utils import device_init, load
 from DnCNN import DnCNN
+from vgg16 import VGG16
 
 
 class Charts:
@@ -48,7 +49,7 @@ class Charts:
             Plots comparison images (noisy, clean, predicted) and saves a comparison figure and a training images GIF.
     """
 
-    def __init__(self, device="mps"):
+    def __init__(self, device="mps", is_vgg16=False):
         """
         Initializes the Charts object with specified device for PyTorch operations and
         sets initial values for attributes.
@@ -57,6 +58,7 @@ class Charts:
             device (str): The device type for PyTorch operations. Defaults to 'mps'.
         """
         self.device = device_init(device=device)
+        self.is_vgg16 = is_vgg16
         self.infinity = float("inf")
         self.model = None
         self.best_model = None
@@ -148,7 +150,10 @@ class Charts:
             Exception: If the TEST_IMAGES_PATH does not exist.
         """
         try:
-            self.model = DnCNN().to(self.device)
+            if self.is_vgg16:
+                self.model = VGG16().to(self.device)
+            else:
+                self.model = DnCNN().to(self.device)
         except Exception as e:
             print("The exception in the model is:", e)
         else:

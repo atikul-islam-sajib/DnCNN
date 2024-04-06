@@ -50,6 +50,7 @@ class Trainer:
         device="mps",
         adam=True,
         SGD=False,
+        is_vgg16=False,
         is_lr_scheduler=False,
         is_l1=False,
         is_l2=False,
@@ -78,6 +79,7 @@ class Trainer:
         self.beta1 = beta1
         self.is_adam = adam
         self.is_SGD = SGD
+        self.is_vgg16 = is_vgg16
         self.device = device
         self.is_lr_scheduler = is_lr_scheduler
         self.is_l1 = is_l1
@@ -93,6 +95,7 @@ class Trainer:
                 model=self.DnCNN,
                 lr=self.lr,
                 adam=self.is_adam,
+                is_vgg16=self.is_vgg16,
                 lr_scheduler=self.is_lr_scheduler,
                 SGD=self.is_SGD,
                 device=self.device,

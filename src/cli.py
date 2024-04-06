@@ -105,6 +105,13 @@ def cli():
         "--SGD", type=bool, default=False, help="Define the SGD".capitalize()
     )
     parser.add_argument(
+        "--is_vgg16",
+        type=bool,
+        default=False,
+        help="Define the VGG16 model".capitalize(),
+    )
+
+    parser.add_argument(
         "--is_l1", type=bool, default=False, help="Define the l1".capitalize()
     )
     parser.add_argument(
@@ -141,7 +148,7 @@ def cli():
             print(e)
         else:
             loader.unzip_folder()
-            dataloader = loader.create_dataloader()
+            _ = loader.create_dataloader()
 
         try:
             trainer = Trainer(
@@ -152,6 +159,7 @@ def cli():
                 beta1=args.beta1,
                 adam=args.adam,
                 SGD=args.SGD,
+                is_vgg16=args.is_vgg16,
                 is_l1=args.is_l1,
                 is_l2=args.is_l2,
                 is_huber_loss=args.is_huber_loss,
@@ -168,6 +176,7 @@ def cli():
         try:
             charts = Charts(
                 device=args.device,
+                is_vgg16=args.is_vgg16,
             )
         except Exception as e:
             print(e)

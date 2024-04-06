@@ -10,6 +10,7 @@ sys.path.append("src/")
 from utils import weight_init, load, params
 from config import PROCESSED_DATA_PATH
 from DnCNN import DnCNN
+from vgg16 import VGG16
 
 
 def helper(**kwargs):
@@ -56,14 +57,19 @@ def helper(**kwargs):
         >>> print(setup["model"])
         >>> print(setup["train_dataloader"].dataset)
     """
-    model = DnCNN()
     device = kwargs["device"]
     adam = kwargs["adam"]
+    is_vgg16 = kwargs["is_vgg16"]
     SGD = kwargs["SGD"]
     lr = kwargs["lr"]
     beta1 = kwargs["beta1"]
     huber_loss = kwargs["huber_loss"]
     lr_scheduler = kwargs["lr_scheduler"]
+
+    if is_vgg16:
+        model = VGG16()
+    else:
+        model = DnCNN()
 
     if adam:
         optimizer = optim.Adam(
