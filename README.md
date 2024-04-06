@@ -1,6 +1,35 @@
 # DnCNN - Residual Learning of Deep CNN for Image Denoising
 
-<img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
+<html>
+<head>
+<style>
+/* Container holding the image */
+.img-container {
+  position: relative;
+  width: 50%;
+}
+
+/_ The image _/
+.img-container img {
+width: 100%;
+transition: transform 0.5s ease;
+}
+
+/_ The image zoom effect _/
+.img-container:hover img {
+transform: scale(1.5);
+}
+</style>
+
+</head>
+<body>
+
+<div class="img-container">
+  <img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg?raw=true" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
+</div>
+
+</body>
+</html>
 
 U-Net is a convolutional neural network designed for semantic image segmentation. This implementation of U-Net is tailored for high performance on various image segmentation tasks, allowing for precise object localization within images.
 
