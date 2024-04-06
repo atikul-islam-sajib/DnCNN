@@ -1,6 +1,6 @@
 # DnCNN - Residual Learning of Deep CNN for Image Denoising
 
-<img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg?raw=true" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels" height="500">
+<img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg?raw=true" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels" height="250">
 
 The DnCNN (Denoising Convolutional Neural Network) is a deep learning model designed for image denoising tasks, offering state-of-the-art performance by learning end-to-end mappings from noisy to clean images. It employs a deep architecture consisting of several convolutional layers without any fully connected layers, enabling it to efficiently handle various noise levels through a single model. The network leverages batch normalization and residual learning to speed up training and enhance denoising performance, making it a powerful tool for enhancing image quality in applications ranging from photography to medical imaging.
 
