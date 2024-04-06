@@ -144,6 +144,8 @@ python cli.py --help
 | `--is_l2`           | bool  | `False`           | Whether to use L2 regularization.                           |
 | `--is_huber_loss`   | bool  | `False`           | Whether to use Huber loss as the training criterion.        |
 | `--is_weight_clip`  | bool  | `False`           | Whether to apply weight clipping.                           |
+| `--is_vgg16`  | bool  | `False`           | Whether to apply VGG16 model.                           |
+| `--is_resnet`  | bool  | `False`           | Whether to apply ResNet50 model.                           |
 
 ### Training and Testing
 
