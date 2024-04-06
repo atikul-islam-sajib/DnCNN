@@ -1,7 +1,5 @@
 # DnCNN - Residual Learning of Deep CNN for Image Denoising
 
-<img src="https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/IMG_9102.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
-
 The DnCNN (Denoising Convolutional Neural Network) is a deep learning model designed for image denoising tasks, offering state-of-the-art performance by learning end-to-end mappings from noisy to clean images. It employs a deep architecture consisting of several convolutional layers without any fully connected layers, enabling it to efficiently handle various noise levels through a single model. The network leverages batch normalization and residual learning to speed up training and enhance denoising performance, making it a powerful tool for enhancing image quality in applications ranging from photography to medical imaging.
 
 <img src="https://miro.medium.com/v2/resize:fit:2000/1*Z0Qc0-ixlMKKs8EnPN3Z-Q.png" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
@@ -107,15 +105,9 @@ images/
 
 For detailed documentation on the dataset visit the [Dataset - GitHub](https://github.com/atikul-islam-sajib/Research-Assistant-Work-/blob/main/images.zip).
 
-### Documentation U-Net
+### Code - GitHub
 
-For detailed documentation on the implementation and usage, visit the -> [DnCNN Documentation](hhttps://atikul-islam-sajib.github.io/DnCNN-deploy/).
-
-### User's guidance Notebook for DnCNN
-
-For detailed implementation and usage - CLI, visit the -> [DnCNN: CLI Notebook](./research/notebooks/ModelTrain-CLI.ipynb).
-
-For detailed implementation and usage - Custom Modules, visit the -> [DnCNN: Custom Modules Notebook](./research/notebooks/ModelTrain-Modules.ipynb).
+For detailed implementation and usage - CLI, visit the -> [DnCNN: GitHub](https://github.com/atikul-islam-sajib/DnCNN?tab=readme-ov-file).
 
 # Command Line Usage
 
@@ -277,11 +269,3 @@ Image("/content/DnCNN/outputs/test_images/result.png")
 # Display the loss curve image
 Image("/content/U-Net/metrics/metrics.png")
 ```
-
-## Contributing
-
-Contributions to improve this implementation of U-Net are welcome. Please follow the standard fork-branch-pull request workflow.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

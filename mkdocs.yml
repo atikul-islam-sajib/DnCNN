@@ -1,0 +1,16 @@
+site_name: DnCNN - Image noise remover
+nav:
+  - Home: index.md
+  - DataLoader: dataloader.md
+  - Helpers: helpers.md
+  - Trainer: trainer.md
+  - Charts: charts.md
+  - CLI: CLI.md
+  - Custom Modules: CustomModuls.md
+
+theme: readthedocs
+plugins:
+  - mkdocstrings
+
+extra_css:
+  - css/custom.css
