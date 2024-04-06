@@ -89,7 +89,6 @@ class Trainer:
         self.infinity = float("inf")
 
         try:
-            print("check")
             parameter = helper(
                 model=self.DnCNN,
                 lr=self.lr,
@@ -101,7 +100,6 @@ class Trainer:
             )
 
         except Exception as e:
-            print("except")
             print(e)
 
         else:

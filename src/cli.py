@@ -123,9 +123,6 @@ def cli():
         help="Define the weight clip".capitalize(),
     )
     parser.add_argument(
-        "--train", action="store_true", help="Train the model".capitalize()
-    )
-    parser.add_argument(
         "--test", action="store_true", help="Test the model".capitalize()
     )
 

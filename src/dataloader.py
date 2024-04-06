@@ -73,7 +73,6 @@ class Loader(Dataset):
 
         try:
             clean()
-            pass
         except Exception as e:
             print("The exception is: {}".format(e))
 
