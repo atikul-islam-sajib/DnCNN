@@ -9,3 +9,5 @@ model:
   lambda: 0.001
   beta1: 0.5
   momentum: 0.9
+  gamma: 0.5
+  step_size: 10

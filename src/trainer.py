@@ -93,6 +93,7 @@ class Trainer:
                 model=self.DnCNN,
                 lr=self.lr,
                 adam=self.is_adam,
+                lr_scheduler=self.is_lr_scheduler,
                 SGD=self.is_SGD,
                 device=self.device,
                 beta1=self.beta1,
@@ -109,6 +110,7 @@ class Trainer:
             self.train_dataloader = parameter["train_dataloader"]
             self.test_dataloader = parameter["test_dataloader"]
             self.dataloader = parameter["dataloader"]
+            self.scheduler = parameter["scheduler"]
 
         finally:
             self.device = device_init(device=self.device)
@@ -262,6 +264,8 @@ class Trainer:
             train_loss = list()
             test_loss = list()
 
+            self.model.train()
+
             for _, (noise_images, clean_images) in enumerate(self.train_dataloader):
                 noise_images = noise_images.to(self.device)
                 clean_images = clean_images.to(self.device)
@@ -272,6 +276,8 @@ class Trainer:
                     )
                 )
 
+            self.model.eval()
+
             for _, (noise_images, clean_images) in enumerate(self.test_dataloader):
                 noise_images = noise_images.to(self.device)
                 clean_images = clean_images.to(self.device)
@@ -281,6 +287,9 @@ class Trainer:
                         noise_images=noise_images, clean_images=clean_images
                     )
                 )
+
+            if self.is_lr_scheduler:
+                self.scheduler.step()
 
             try:
                 self.save_checkpoints(

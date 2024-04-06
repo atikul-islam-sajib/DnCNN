@@ -3,6 +3,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.optim.lr_scheduler import StepLR
 
 sys.path.append("src/")
 
@@ -19,14 +20,25 @@ def helper(**kwargs):
     lr = kwargs["lr"]
     beta1 = kwargs["beta1"]
     huber_loss = kwargs["huber_loss"]
+    lr_scheduler = kwargs["lr_scheduler"]
 
     if adam:
         optimizer = optim.Adam(
             model.parameters(), lr=lr, betas=(beta1, params()["model"]["beta1"])
         )
+        scheduler = StepLR(
+            optimizer=optimizer,
+            step_size=params()["model"]["step_size"],
+            gamma=params()["model"]["gamma"],
+        )
     elif SGD:
         optimizer = optim.SGD(
             model.parameters(), lr=lr, momentum=params()["model"]["momentum"]
+        )
+        scheduler = StepLR(
+            optimizer=optimizer,
+            step_size=params()["model"]["step_size"],
+            gamma=params()["model"]["gamma"],
         )
 
     if huber_loss:
@@ -58,6 +70,7 @@ def helper(**kwargs):
         "train_dataloader": train_dataloader,
         "test_dataloader": test_dataloader,
         "dataloader": dataloader,
+        "scheduler": scheduler,
     }
 
 
