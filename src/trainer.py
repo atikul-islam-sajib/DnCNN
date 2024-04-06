@@ -213,8 +213,8 @@ class Trainer:
                 )
 
             try:
-                self.history["train_loss"] = np.array(train_loss).mean()
-                self.history["test_loss"] = np.array(test_loss).mean()
+                self.history["train_loss"].append(np.array(train_loss).mean())
+                self.history["test_loss"].append(np.array(test_loss).mean())
 
             except Exception as e:
                 print(e)
