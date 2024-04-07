@@ -108,7 +108,7 @@ For detailed documentation on the dataset visit the [Dataset - GitHub](https://g
 
 ### Documentation U-Net
 
-For detailed documentation on the implementation and usage, visit the -> [DnCNN Documentation](hhttps://atikul-islam-sajib.github.io/DnCNN-deploy/).
+For detailed documentation on the implementation and usage, visit the -> [DnCNN Documentation](https://atikul-islam-sajib.github.io/DnCNN-deploy/).
 
 ### User's guidance Notebook for DnCNN
 
